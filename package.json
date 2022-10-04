@@ -1,0 +1,26 @@
+{
+  "name": "kaam-kaaj-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdulAhad696/Kaam-Kaaj-BackEnd.git"
+  },
+  "author": "Huzaifa AbdulAhad Umair Kashir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbdulAhad696/Kaam-Kaaj-BackEnd/issues"
+  },
+  "homepage": "https://github.com/AbdulAhad696/Kaam-Kaaj-BackEnd#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.4"
+  }
+}
