@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import routes from "./routes/route.js"
+import signUp from "./routes/signUp.js"
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -16,6 +17,7 @@ mongoose.connect(connection_url)
 
 //Routes
 app.use("/" , routes)
+app.use("/signup",signUp)
 
 //Testing Endpoint
 app.get("/" , (req , res)=>{
