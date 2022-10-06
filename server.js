@@ -2,7 +2,8 @@
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
-import signin from "./routes/signin.js"
+import routes from "./routes/route.js"
+import signUp from "./routes/signUp.js"
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -19,7 +20,8 @@ mongoose.connection.on("connected" , ()=>{
 
 
 //Routes
-app.use("/" , signin)
+app.use("/" , routes)
+app.use("/signup",signUp)
 
 //Testing Endpoint
 app.get("/" , (req , res)=>{
