@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import routes from "./routes/route.js"
 import signUp from "./routes/signUp.js"
+import signin from "./routes/signin.js"
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -22,11 +23,11 @@ mongoose.connection.on("connected" , ()=>{
 //Routes
 app.use("/" , routes)
 app.use("/signup",signUp)
+app.use("/signin",signin)
 
 //Testing Endpoint
 app.get("/" , (req , res)=>{
     res.status(200).send("HELLO KAAM KAAJ!!!");
-    console.log(req.body);
 })
 
 
