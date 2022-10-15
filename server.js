@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import routes from "./routes/route.js"
 import signUp from "./routes/signUp.js"
 import signin from "./routes/signin.js"
+import customerView from "./routes/customerView.js";
+
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -24,6 +26,7 @@ mongoose.connection.on("connected" , ()=>{
 app.use("/" , routes)
 app.use("/signup",signUp)
 app.use("/signin",signin)
+app.use("/services",customerView)
 
 //Testing Endpoint
 app.get("/" , (req , res)=>{
