@@ -1,5 +1,5 @@
 import  express  from "express";
-import reservation from "../modules/reservation.js";
+import reservation from "../modals/Reservation";
 
 const router = express.Router();
 
