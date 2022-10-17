@@ -7,13 +7,10 @@ const router = express.Router()
 router.get("/:email/:password" , (req , res)=>{
     const cnicPhoneUsername = req.params.email;
     const password = req.params.password;
-    console.log(cnicPhoneUsername , password)
     console.log("ENTERED")
     User.find({email:cnicPhoneUsername ,password:password} , (err , data)=>{
         if (err){res.status(500).send(err)}
-
         else{
-            console.log("ENTERED")
             res.status(200).send(data);
         }
     }
