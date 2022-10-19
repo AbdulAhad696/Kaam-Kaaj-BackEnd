@@ -7,6 +7,8 @@ import signUp from "./routes/signUp.js"
 import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
+import viewjobs from "./routes/viewjobs.js"
+
 
 import complain from "./routes/complain.js"
 //App Config
@@ -25,6 +27,7 @@ app.use("/signin",signin)
 app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
+app.use("/service-provider/viewjobs",viewjobs)
 
 
 // Listener
