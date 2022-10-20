@@ -8,8 +8,13 @@ import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
 import spprofiledata from "./routes/spProfileData.js";
+import viewjobs from "./routes/viewjobs.js"
 
-import complain from "./routes/complain.js"
+import complain from "./routes/complain.js";
+
+import addingJobs from "./routes/addJobs.js";
+import serviceProviderProfile from "./routes/serviceProviderProfile.js"
+
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -27,6 +32,9 @@ app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
 app.use("/spdata",spprofiledata);
+app.use("/service-provider/viewjobs",viewjobs)
+app.use("/addJobs",addingJobs)
+app.use("/serviceprovider/profile",serviceProviderProfile);
 
 
 // Listener
