@@ -1,6 +1,6 @@
 import  express from "express";
-import ServiceProviders from "../modules/ServiceProviders.js";
-import jobs from "../modules/jobs.js"
+import ServiceProviders from "../modals/ServiceProviders.js";
+import jobs from "../modals/Jobs.js"
 
 const router = express.Router();
 
@@ -45,7 +45,7 @@ router.get("/categoryjobs/:cat",(req,res)=>{
             $lookup:
             {
                 from: "services",
-                localField: "jobCategory",
+                localField: "category",
                 foreignField: "_id",
                 as: "serviceDetails"
             }
@@ -53,7 +53,7 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         {   
             $match:
             {
-                $and:[{"serviceDetails.tittle":req.body.category}]
+                $and:[{"serviceDetails.tittle":req.params.cat}]
             }
         }
 
