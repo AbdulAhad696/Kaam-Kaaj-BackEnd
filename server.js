@@ -12,6 +12,7 @@ import viewjobs from "./routes/viewjobs.js"
 import complain from "./routes/complain.js";
 
 import addingJobs from "./routes/addJobs.js";
+import serviceProviderProfile from "./routes/serviceProviderProfile.js"
 
 //App Config
 const app = express();
@@ -28,9 +29,10 @@ app.use("/signup",signUp)
 app.use("/signin",signin)
 app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
-app.use("/contactus",complain);
 app.use("/service-provider/viewjobs",viewjobs)
 app.use("/addJobs",addingJobs)
+app.use("/contactus",complain)
+app.use("/serviceprovider/profile",serviceProviderProfile);
 
 
 // Listener
