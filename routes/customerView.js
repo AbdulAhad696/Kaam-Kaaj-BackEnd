@@ -16,6 +16,19 @@ router.get("/",function(req,res){
     });
 });
 
+router.get("/:service",async function(req,res){
+    let data;
+    data=await Service.find({tittle:req.params.service})
+    if(data)
+    {
+        return res.send(data)
+    }
+    else{
+        console.log("error in retrieving service providers...............")
+        return []
+    }
+});
+
 export default  router;
 
 

@@ -7,8 +7,10 @@ import signUp from "./routes/signUp.js"
 import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
+import complain from "./routes/complain.js";
 
-import complain from "./routes/complain.js"
+import addingJobs from "./routes/addJobs.js";
+
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -25,6 +27,7 @@ app.use("/signin",signin)
 app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
+app.use("/addJobs",addingJobs)
 
 
 // Listener
