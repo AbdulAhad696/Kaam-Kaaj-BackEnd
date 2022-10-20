@@ -9,8 +9,10 @@ import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
 import viewjobs from "./routes/viewjobs.js"
 
+import complain from "./routes/complain.js";
 
-import complain from "./routes/complain.js"
+import addingJobs from "./routes/addJobs.js";
+
 //App Config
 const app = express();
 const port = process.env.PORT || 8001;
@@ -28,6 +30,7 @@ app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
 app.use("/service-provider/viewjobs",viewjobs)
+app.use("/addJobs",addingJobs)
 
 
 // Listener
