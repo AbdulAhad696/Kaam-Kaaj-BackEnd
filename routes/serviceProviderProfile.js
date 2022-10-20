@@ -25,11 +25,11 @@ router.get("/:email" ,async function(req,res){
                 as: "serviceDetails"
             }
         },
-        // {
-        //     $match:{
-        //         $and:[{"serviceProviderDetails.email" : req.params.email}]
-        //     }
-        // }, 
+        {
+            $match:{
+                $and:[{"serviceProviderDetails.email" : req.params.email}]
+            }
+        }, 
         
     ]).exec(function(err , services){
         if(err){
