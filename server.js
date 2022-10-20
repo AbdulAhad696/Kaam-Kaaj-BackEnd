@@ -7,6 +7,7 @@ import signUp from "./routes/signUp.js"
 import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
+import spprofiledata from "./routes/spProfileData.js";
 
 import complain from "./routes/complain.js"
 //App Config
@@ -25,6 +26,7 @@ app.use("/signin",signin)
 app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
+app.use("/spdata",spprofiledata);
 
 
 // Listener
