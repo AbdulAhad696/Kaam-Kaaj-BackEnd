@@ -7,7 +7,6 @@ import signUp from "./routes/signUp.js"
 import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
-import spprofiledata from "./routes/spProfileData.js";
 import viewjobs from "./routes/viewjobs.js"
 
 import complain from "./routes/complain.js";
@@ -23,6 +22,8 @@ const port = process.env.PORT || 8001;
 //MiddleWares
 app.use(express.json());
 app.use(cors());
+app.use( "/uploads" , express.static("uploads"))
+
 
 //Routes
 app.use("/" , routes)
@@ -31,7 +32,7 @@ app.use("/signin",signin)
 app.use("/services",customerView)
 app.use("/serviceproviders",categoryWiseServiceProvider )
 app.use("/contactus",complain);
-app.use("/spdata",spprofiledata);
+
 app.use("/service-provider/viewjobs",viewjobs)
 app.use("/addJobs",addingJobs)
 app.use("/serviceprovider/profile",serviceProviderProfile);
