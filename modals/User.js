@@ -7,6 +7,7 @@ const userSchema=new mongoose.Schema({
     cnic:String,
     phoneNumber:String,
     address:String,
-    role:String
+    role:String,
+    authentication:String
 });
 export default mongoose.model("users",userSchema);
