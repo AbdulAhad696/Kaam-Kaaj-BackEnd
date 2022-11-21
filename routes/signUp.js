@@ -36,9 +36,18 @@ const router = express.Router()
 router.get('/',(req,res)=>{
   console.log('req:',req.query.id)
   try{
-  User.findOneAndUpdate({email: "umairahmedpaki7@gmail.com"}, {authentication: "true"}).then((res)=>{
+  User.findOneAndUpdate({_id: req.query.id}, {authentication: "true"}).then((res)=>{
     console.log(res)
+    User.deleteMany({email:res.email,authentication:"false"}, function (err, docs) {
+      if (err){
+          console.log(err)
+      }
+      else{
+          console.log("Deleted User : ", docs);
+      }
+    });
   })
+
   res.sendFile('D:/5th Semester/Kaam-Kaaj-BackEnd/views/successfullyVerifiedTemplate.html')
 }
   catch(err){
@@ -180,7 +189,7 @@ router.get("/:email",async(req,res)=>{
     console.log("Request is received for getting data with email "+req.params.email)
     let isvalid
     isvalid=await User.findOne({email:req.params.email})
-    if(isvalid)
+    if(isvalid?.authentication=="true")
     {
         res.send(true)
         console.log("Result:true")
