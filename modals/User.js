@@ -8,6 +8,7 @@ const userSchema=new mongoose.Schema({
     phoneNumber:String,
     address:String,
     role:String,
-    authentication:String
+    authentication:String,
+    location:Object
 });
 export default mongoose.model("users",userSchema);
