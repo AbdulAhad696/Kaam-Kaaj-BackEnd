@@ -13,6 +13,7 @@ import complain from "./routes/complain.js";
 
 import addingJobs from "./routes/addJobs.js";
 import serviceProviderProfile from "./routes/serviceProviderProfile.js"
+import serviceProviderDetails from "./routes/serviceProviderDetails.js"
 
 //App Config
 const app = express();
@@ -36,6 +37,7 @@ app.use("/contactus",complain);
 app.use("/service-provider/viewjobs",viewjobs)
 app.use("/addJobs",addingJobs)
 app.use("/serviceprovider/profile",serviceProviderProfile);
+app.use("/serviceprovider/mydetails",serviceProviderDetails)
 
 
 // Listener
