@@ -36,7 +36,7 @@ router.get("/:_id" , async(req , res)=>{
         },
         {
             $lookup:{
-                from: "clientProfiles", 
+                from: "clientprofiles", 
                 localField: "jobAssignedBy", 
                 foreignField: "client",
                 as: "clientProfile"
@@ -45,7 +45,7 @@ router.get("/:_id" , async(req , res)=>{
         {
             $lookup:{
                 from: "bids", 
-                localField: "bid", 
+                localField: "acceptedBid", 
                 foreignField: "_id",
                 as: "bidDetails"
             }

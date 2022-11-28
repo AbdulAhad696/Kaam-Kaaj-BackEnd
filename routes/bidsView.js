@@ -1,26 +1,27 @@
 import express from "express";
 import Job from "../modals/Jobs.js";
 import mongoose from "mongoose";
+import Bids from "../modals/Bids.js"
 
 // ------join of bids, users and serviceProviders tables in order to get biding data---------------
 const router = express.Router()
 router.get("/:id", (req, res) => {
     console.log("getting bids gata..............")
-    Job.aggregate([
+    Bids.aggregate([
         {
             $lookup:
             {
-                from: 'bids',
-                localField: 'bids',
+                from: 'jobs',
+                localField: 'jobId',
                 foreignField: '_id',
-                as: 'bidsDetails'
+                as: 'jobDetails'
             }
         }
         ,
         { $lookup:
             {
                 from:'users',
-                localField:'bidsDetails.email',
+                localField:'email',
                 foreignField:'email',
                 as:'userDetails'
             }
@@ -32,20 +33,10 @@ router.get("/:id", (req, res) => {
                 foreignField:'serviceProvider',
                 as:'serviveProviderDetails'
             }
-        }
-        ,
-        { $lookup:
-            {
-                from:'services',
-                localField: "category",
-                foreignField:'_id',
-                as:'serviveDetails'
-            }
-        }
-        ,
+        },
         {
             $match: {
-                $and: [{ "_id": mongoose.Types.ObjectId(req.params.id) }]
+                $and: [{ "jobId": mongoose.Types.ObjectId(req.params.id) }]
             }
         }
     ]).exec(function (err, bidData) {
