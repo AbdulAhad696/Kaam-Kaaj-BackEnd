@@ -13,6 +13,8 @@ import addingJobs from "./routes/addJobs.js";
 import serviceProviderProfile from "./routes/serviceProviderProfile.js"
 import serviceProviderDetails from "./routes/serviceProviderDetails.js"
 import serviceProviderProjects from "./routes/serviceProviderProjects.js"
+import viewingBids from "./routes/bidsView.js"
+
 
 //App Config
 const app = express();
@@ -38,6 +40,8 @@ app.use("/addJobs",addingJobs)
 app.use("/serviceprovider/profile",serviceProviderProfile);
 app.use("/serviceprovider/mydetails",serviceProviderDetails)
 app.use("/serviceprovider/projects/",serviceProviderProjects)
+app.use("/bids",viewingBids);
+
 
 
 // Listener
