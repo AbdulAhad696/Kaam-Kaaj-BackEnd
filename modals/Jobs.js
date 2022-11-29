@@ -11,7 +11,7 @@ const jobsSchema = new mongoose.Schema({
     spRating:Number,
     status:String,
     jobAddress:String,
-    estCompletionTime:String,
+    estCompletionTime:Date,
     category:{type:mongoose.Schema.Types.ObjectId , ref :"Services"},
     jobAssignedTo:{type:mongoose.Schema.Types.ObjectId , ref :"User"},
     jobAssignedBy:{type:mongoose.Schema.Types.ObjectId , ref :"User"}
