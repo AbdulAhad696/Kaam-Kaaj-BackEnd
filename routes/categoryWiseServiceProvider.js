@@ -36,6 +36,7 @@ router.get("/:service" ,async function(req,res){
             console.log("Error in retreiving serices..........")
         }
         else{
+            console.log("response sent");
             res.json(services)
         }
     })
