@@ -8,11 +8,13 @@ import signin from "./routes/signin.js"
 import customerView from "./routes/customerView.js";
 import categoryWiseServiceProvider from "./routes/categoryWiseServiceProvider.js";
 import viewjobs from "./routes/viewjobs.js"
-
 import complain from "./routes/complain.js";
-
 import addingJobs from "./routes/addJobs.js";
 import serviceProviderProfile from "./routes/serviceProviderProfile.js"
+import viewingBids from "./routes/bidsView.js"
+// import viewSpecificJob from "./routes/viewSpecificJob.js"
+// import viewSpecificCategory from "./routes/viewSpecificCategory.js";
+// import viewSpecificClient from "./routes/viewSpecificClient.js";
 
 //App Config
 const app = express();
@@ -36,6 +38,10 @@ app.use("/contactus",complain);
 app.use("/service-provider/viewjobs",viewjobs)
 app.use("/addJobs",addingJobs)
 app.use("/serviceprovider/profile",serviceProviderProfile);
+app.use("/bids",viewingBids);
+// app.use("/specificJob",viewSpecificJob)
+// app.use("/specificCategory",viewSpecificCategory)
+// app.use("/specificClient" , viewSpecificClient)
 
 
 // Listener
