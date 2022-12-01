@@ -1,6 +1,4 @@
 import express from "express";
-// import User from "../modals/User.js"
-import ServiceProviders from "../modals/ServiceProviders.js";
 import Jobs from "../modals/Jobs.js";
 import mongoose from 'mongoose'
 
@@ -8,38 +6,24 @@ import mongoose from 'mongoose'
 const router = express.Router()
 // var mongoose = require('mongoose');
 var currentProjects
-// var totalDoneJobs
-// var totalDoneJobsInDueDate
-// var totalRejectedJobs
 router.get("/:_id" , async(req , res)=>{
     console.log("Request is received for getting the projectss of "+req.params._id)
-
-            // const querryForDoneJobsOnTime=Jobs.find( {jobAssignedTo:data[0].serviceProviderDetails[0]._id,jobDoneStatus:"early"} );
-
-
-    // try{
-    //     currentProjects=await Jobs.find( {jobAssignedTo:req.params._id,status:"inProgress"} );
-    // }
-    // catch(err){
-    //     console.log(err);
-    // }
-
     Jobs.aggregate([
         { $lookup:
             {
                 from:'users',
-                localField:'jobAssignedBy',
+                localField:'jobAssignedTo',
                 foreignField:'_id',
-                as:'clientDetails'
+                as:'serviceProviderDetails'
             }
 
         },
         {
             $lookup:{
-                from: "clientprofiles", 
-                localField: "jobAssignedBy", 
-                foreignField: "client",
-                as: "clientProfile"
+                from: "serviceproviders", 
+                localField: "jobAssignedTo", 
+                foreignField: "serviceProvider",
+                as: "serviceProviderProfile"
             }
         },
         {
@@ -52,7 +36,7 @@ router.get("/:_id" , async(req , res)=>{
         },
         {
             $match:{
-                $and:[{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"inProgress"}]
+                $and:[{"jobAssignedBy":mongoose.Types.ObjectId(req.params._id),"status":"inProgress"}]
             }
         }, 
         
