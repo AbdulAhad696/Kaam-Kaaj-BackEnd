@@ -14,6 +14,7 @@ import serviceProviderProfile from "./routes/serviceProviderProfile.js"
 import serviceProviderDetails from "./routes/serviceProviderDetails.js"
 import serviceProviderProjects from "./routes/serviceProviderProjects.js"
 import viewingBids from "./routes/bidsView.js"
+import customerPage from "./routes/customerPage.js"
 
 
 //App Config
@@ -42,6 +43,7 @@ app.use("/serviceprovider/profile",serviceProviderProfile);
 app.use("/serviceprovider/mydetails",serviceProviderDetails)
 app.use("/serviceprovider/projects/",serviceProviderProjects)
 app.use("/bids",viewingBids);
+app.use("/customer-mainpage",customerPage);
 
 
 
