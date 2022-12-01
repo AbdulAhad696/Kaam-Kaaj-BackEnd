@@ -7,4 +7,4 @@ const clientProfileSchema = new mongoose.Schema({
     rating:Number,
     client:{type:mongoose.Schema.Types.ObjectId , ref :"User"}
 })
-export default mongoose.model("clientProfiles",clientProfileSchema);
+export default mongoose.model("clientprofiles",clientProfileSchema);
