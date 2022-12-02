@@ -17,6 +17,8 @@ import viewingBids from "./routes/bidsView.js"
 import customerPage from "./routes/customerPage.js"
 import clientDetails from "./routes/clientDetails.js"
 import clientProjects from "./routes/clientProjects.js"
+import sendMail from "./routes/sendMail.js"
+import changePassword from "./routes/changePassword.js"
 
 
 //App Config
@@ -49,6 +51,9 @@ app.use("/client/projects/",clientProjects)
 
 app.use("/bids",viewingBids);
 app.use("/customer-mainpage",customerPage);
+
+app.use("/sendmail",sendMail)
+app.use("/changepassword",changePassword)
 
 
 

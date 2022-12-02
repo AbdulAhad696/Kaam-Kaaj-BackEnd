@@ -7,12 +7,11 @@ import { lastValueFrom } from "rxjs";
 const router = express.Router()
 
 
-router.get("/:email/:password" , async(req , res)=>{
+router.get("/:id/:password" , async(req , res)=>{
     const cryptr = new Cryptr('ReallySecretKey');
-    const email = req.params.email;
-    const password =req.params.password;
-    // console.log(password)
-    console.log("ENTERED")
+    const id = req.params.id;
+    const password =cryptr.encrypt(req.params.password);
+    console.log("Request is received for changing password",req.params.id)
     // User.find({email:email ,password:password} , (err , data)=>{
     //     if (err){res.status(500).send(err)}
     //     else{
@@ -20,13 +19,13 @@ router.get("/:email/:password" , async(req , res)=>{
     //     }
     // }
     // )
-
-    const user=await User.find({email:email})
-    if(password==cryptr.decrypt(user[0]?.password)){
-        res.status(200).send(user);
+    try{
+        await User.findOneAndUpdate({_id:id},{password:password})
+        res.send(true)
     }
-    else{
-        res.send({})
+    catch(err){
+        res.send(false)
+
     }
 
 })
