@@ -64,7 +64,7 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         {   
             $match:
             {
-                $and:[{"serviceDetails.tittle":req.params.cat}]
+                $and:[{"serviceDetails.tittle":req.params.cat,status:"punched"}]
             }
         }
 

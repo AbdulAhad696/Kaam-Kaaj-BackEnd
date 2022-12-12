@@ -27,7 +27,7 @@ router.get("/jobs/:userId",(req,res)=>{
         {   
             $match:
             {
-                $and:[{"clientDetails.client":mongoose.Types.ObjectId(req.params.userId)}]
+                $and:[{"clientDetails.client":mongoose.Types.ObjectId(req.params.userId),status:"punched"}]
             }
         }
     ]).exec(function(err,data){
