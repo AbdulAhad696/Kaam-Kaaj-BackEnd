@@ -9,7 +9,8 @@ const serviceProviderSchema = new mongoose.Schema({
     rating: Number,
     experience: Number,
     jobsCompleted: Number,
-    totalEarnings: Number
+    totalEarnings: Number,
+    bids:[]
 });
 
 export default mongoose.model("serviceproviders",serviceProviderSchema)

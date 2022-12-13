@@ -9,6 +9,9 @@ import smtpTransport from "nodemailer-smtp-transport";
 import fs from "fs";
 import handlebars from "handlebars";
 import { baseUrl } from "../constants.js";
+import Cryptr from "cryptr"
+
+
 
 var readHTMLFile = function (path, callback) {
   fs.readFile(path, { encoding: "utf-8" }, function (err, html) {
@@ -64,6 +67,8 @@ router.get("/", (req, res) => {
 
 // <!-- --------------------Signing up a new user------------------------------ -->
 router.post("/", async (req, res) => {
+  const cryptr = new Cryptr('ReallySecretKey');
+  req.body.password=cryptr.encrypt(req.body.password);
   const user = new User(req.body);
   try {
     const isRegister = await user.save();

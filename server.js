@@ -14,6 +14,11 @@ import serviceProviderProfile from "./routes/serviceProviderProfile.js"
 import serviceProviderDetails from "./routes/serviceProviderDetails.js"
 import serviceProviderProjects from "./routes/serviceProviderProjects.js"
 import viewingBids from "./routes/bidsView.js"
+import customerPage from "./routes/customerPage.js"
+import clientDetails from "./routes/clientDetails.js"
+import clientProjects from "./routes/clientProjects.js"
+import sendMail from "./routes/sendMail.js"
+import changePassword from "./routes/changePassword.js"
 
 
 //App Config
@@ -25,6 +30,7 @@ const port = process.env.PORT || 8001;
 app.use(express.json());
 app.use(cors());
 app.use( "/uploads" , express.static("uploads"))
+app.use( "/JobGigPics" , express.static("JobGigPics"))
 
 
 //Routes
@@ -39,8 +45,15 @@ app.use("/service-provider/viewjobs",viewjobs)
 app.use("/addJobs",addingJobs)
 app.use("/serviceprovider/profile",serviceProviderProfile);
 app.use("/serviceprovider/mydetails",serviceProviderDetails)
+app.use("/client/mydetails",clientDetails)
 app.use("/serviceprovider/projects/",serviceProviderProjects)
+app.use("/client/projects/",clientProjects)
+
 app.use("/bids",viewingBids);
+app.use("/customer-mainpage",customerPage);
+
+app.use("/sendmail",sendMail)
+app.use("/changepassword",changePassword)
 
 
 

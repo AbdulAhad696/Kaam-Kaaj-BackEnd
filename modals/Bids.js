@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
 const bidsSchema = new mongoose.Schema({
-    duration:String,
+    duration:Number,
     amount:Number,
-    email:String
+    email:String ,
+    jobId:{type:mongoose.Schema.Types.ObjectId , ref :"Jobs"},
+    status:String,
+
 })
 export default mongoose.model("bids",bidsSchema);
