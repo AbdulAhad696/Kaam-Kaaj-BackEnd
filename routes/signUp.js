@@ -143,7 +143,14 @@ router.get("/:email", async (req, res) => {
   );
   let isvalid;
   isvalid = await User.findOne({ email: req.params.email });
-  if (isvalid?.authentication == "true") {
+  // if (isvalid?.authentication == "true") {
+  //   res.send(true);
+  //   console.log("Result:true");
+  // } else {
+  //   res.send(false);
+  //   console.log("Result:false");
+  // }
+  if (isvalid) {
     res.send(true);
     console.log("Result:true");
   } else {
