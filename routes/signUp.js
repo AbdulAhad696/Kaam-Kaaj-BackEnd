@@ -3,6 +3,7 @@ import User from "../modals/User.js";
 import ServiceProvider from "../modals/ServiceProviders.js";
 import nodemailer from "nodemailer";
 import clientProfile from "../modals/ClientProfile.js";
+import mongoose from "mongoose";
 
 //Email authentication setup
 import smtpTransport from "nodemailer-smtp-transport";
@@ -68,7 +69,7 @@ router.get("/", (req, res) => {
 // <!-- --------------------Signing up a new user------------------------------ -->
 router.post("/", async (req, res) => {
   const cryptr = new Cryptr('ReallySecretKey');
-  req.body.password=cryptr.encrypt(req.body.password);
+  req.body.password = cryptr.encrypt(req.body.password);
   const user = new User(req.body);
   try {
     const isRegister = await user.save();
@@ -76,10 +77,21 @@ router.post("/", async (req, res) => {
     if (user.role == "Worker") {
       const workerProfile = new ServiceProvider({
         serviceProvider: isRegister._id,
+        serviceCategory: mongoose.Types.ObjectId("639784392c0c4bc0620d2e90"),
+        profilePicture: "uploads\\defaultProfile.png",
+        portfolioImages: [],
+        jobs: [],
+        status: "",
+        rating: 0,
+        experience: 0,
+        jobsCompleted: 0,
+        totalEarnings: 0,
+        bids: [],
+        balance: 0
       });
       await workerProfile.save();
       console.log("Worker profile is also created..");
-    } else{
+    } else {
       const myProfile = new clientProfile({
         client: isRegister._id,
         profileImage: "uploads\\defaultProfile.png",

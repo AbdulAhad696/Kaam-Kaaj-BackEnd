@@ -9,6 +9,7 @@ const userSchema=new mongoose.Schema({
     address:String,
     role:String,
     authentication:String,
-    location:Object
+    location:Object,
+    balance:Number
 });
 export default mongoose.model("users",userSchema);

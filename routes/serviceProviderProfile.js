@@ -1,13 +1,14 @@
 import express  from "express";
 import ServiceProviders from "../modals/ServiceProviders.js";
-import Users from "../modals/User.js";
 import multer from "multer";
 import User from "../modals/User.js";
 import Services from "../modals/Services.js";
 import mongoose, { isObjectIdOrHexString } from "mongoose";
 import  fs from "fs";
 import path from 'path';
-import {fileURLToPath} from 'url'
+import {fileURLToPath} from 'url';
+import Cryptr from "cryptr"
+import Review from "../modals/Review.js";
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -37,8 +38,9 @@ const uploads = multer({
   
 
 router.get("/:email" ,async function(req,res){
+
     console.log("Request is received for getting the profile of "+req.params.email);
-    let data;
+    
     ServiceProviders.aggregate([
         { $lookup:
             {
@@ -70,18 +72,7 @@ router.get("/:email" ,async function(req,res){
         else{
             res.json(services)
         }
-    })
-    
-    // data=await ServiceProviders.find({service:req.params.service})
-    // if(data)
-    // {
-    //     return res.send(data)
-    // }
-    // else{
-    //     console.log("error in retrieving service providers...............")
-    //     return []
-    // }
-// } ); 
+    }) 
 })
 
 router.put("/updateProfile" ,uploads.single("url"),(req, res)=>{
@@ -123,11 +114,14 @@ router.put("/updateProfile" ,uploads.single("url"),(req, res)=>{
           else{
     // Updating data in ServiceProvider Collection
     // if profile picture is NOT changed
-        ServiceProviders.findOneAndUpdate({serviceProvider:updatedUser._id} ,{
+            // console.log(updatedUser._id)
+            // console.log(service[0]._id)
+            ServiceProviders.findOneAndUpdate({serviceProvider:updatedUser._id} ,{
             serviceCategory : service[0]._id
         })
         .then((updatedSP)=>{
           console.log(3)
+
           console.log(updatedSP)
          })}
     })
@@ -165,6 +159,44 @@ router.put("/updateProfile/uploadImage" ,uploads.single("url"),(req, res)=>{
     }).then((sp)=>res.status(200).send(sp)).catch((err)=>res.status(500).send(err))
   }).catch((err)=>res.status(500).send(err))
 
+})
+router.get("/reviews/:id",async(req, res)=>{
+  console.log("Requesting reviews for id" , req.params.id)
+  Review.aggregate([
+    {$lookup:
+    {
+      from:'jobs',
+      localField:"job",
+      foreignField:"_id",
+      as:"job"
+    }},
+    {$lookup:
+    {
+      from:"users",
+      localField:"job.jobAssignedBy",
+      foreignField:"_id",
+      as:"client"
+    }},
+    {$lookup:
+      {
+        from:"clientprofiles",
+        localField:"client._id",
+        foreignField:"client",
+        as:"profile"
+      }},
+    {$match:
+    {"reviewTo":mongoose.Types.ObjectId(req.params.id)}
+   }
+  
+  ]).exec((err , data)=>{
+    if (err){
+      res.status(404).send(err)
+    }
+    else{
+      console.log(data)
+      res.status(200).send(data)
+    }
+  })
 })
 
 
