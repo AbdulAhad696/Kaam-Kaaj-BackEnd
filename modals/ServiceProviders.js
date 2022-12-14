@@ -9,7 +9,7 @@ const serviceProviderSchema = new mongoose.Schema({
     rating: Number,
     experience: Number,
     jobsCompleted: Number,
-    totalEarnings: Number,
+    totalEarning: Number,
     bids:[]
 });
 

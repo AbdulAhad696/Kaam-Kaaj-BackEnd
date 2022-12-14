@@ -18,7 +18,9 @@ import customerPage from "./routes/customerPage.js"
 import clientDetails from "./routes/clientDetails.js"
 import clientProjects from "./routes/clientProjects.js"
 import sendMail from "./routes/sendMail.js"
-import changePassword from "./routes/changePassword.js"
+import changePassword from "./routes/changePassword.js";
+import doneProjects from "./routes/doneProjects.js";
+
 
 
 //App Config
@@ -48,12 +50,11 @@ app.use("/serviceprovider/mydetails",serviceProviderDetails)
 app.use("/client/mydetails",clientDetails)
 app.use("/serviceprovider/projects/",serviceProviderProjects)
 app.use("/client/projects/",clientProjects)
-
 app.use("/bids",viewingBids);
 app.use("/customer-mainpage",customerPage);
-
-app.use("/sendmail",sendMail)
-app.use("/changepassword",changePassword)
+app.use("/sendmail",sendMail);
+app.use("/changepassword",changePassword);
+app.use("/serviceProvider/doneProject",doneProjects)
 
 
 
