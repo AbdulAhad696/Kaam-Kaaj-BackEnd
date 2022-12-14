@@ -47,6 +47,7 @@ router.post('/multipleImages' , upload.array('files') , (req , res , next) =>{
 
 // -------------------------storing job to the Mongo compass----------------------
 router.post("/", async (req,res)=>{
+    console.log(req.body.jobAssignedTo)
     let job = new Jobs({
         title: req.body.title,
         jobPostDate: req.body.jobPostDate,
@@ -57,7 +58,8 @@ router.post("/", async (req,res)=>{
         jobAddress: req.body.jobAddress,
         estCompletionTime: req.body.estCompletionTime,
         category: req.body.category,
-        jobAssignedBy: req.body.jobAssignedBy
+        jobAssignedBy: req.body.jobAssignedBy,
+        jobAssignedTo: req.body.jobAssignedTo
     })
     imagesArray=[]
     let isJobAdded;
