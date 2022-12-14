@@ -76,6 +76,14 @@ router.post("/", async (req, res) => {
     if (user.role == "Worker") {
       const workerProfile = new ServiceProvider({
         serviceProvider: isRegister._id,
+        profilePicture:"uploads\\defaultProfile.png",
+        rating:0,
+        experience:0,
+        jobsCompleted:0,
+        totalEarning:0,
+        portfolioImages:[],
+        status:"",
+        balance:0,
       });
       await workerProfile.save();
       console.log("Worker profile is also created..");
@@ -83,6 +91,8 @@ router.post("/", async (req, res) => {
       const myProfile = new clientProfile({
         client: isRegister._id,
         profileImage: "uploads\\defaultProfile.png",
+        totalSpending:0,
+        rating:0
       });
       await myProfile.save();
       console.log("Client profile is also created..");
@@ -133,7 +143,14 @@ router.get("/:email", async (req, res) => {
   );
   let isvalid;
   isvalid = await User.findOne({ email: req.params.email });
-  if (isvalid?.authentication == "true") {
+  // if (isvalid?.authentication == "true") {
+  //   res.send(true);
+  //   console.log("Result:true");
+  // } else {
+  //   res.send(false);
+  //   console.log("Result:false");
+  // }
+  if (isvalid) {
     res.send(true);
     console.log("Result:true");
   } else {

@@ -36,7 +36,7 @@ router.get("/:id", (req, res) => {
         },
         {
             $match: {
-                $and: [{ "jobId": mongoose.Types.ObjectId(req.params.id) }]
+                $and: [{ "jobId": mongoose.Types.ObjectId(req.params.id),"status":"pending" }]
             }
         }
     ]).exec(function (err, bidData) {
@@ -48,4 +48,17 @@ router.get("/:id", (req, res) => {
         }
     })
 })
+
+
+router.patch("/:id",(req,res)=>{
+    console.log("Request is received for changing the status of the bid:",req.params.id)
+
+    Bids.findOneAndUpdate({_id: req.params.id },req.body).then((result)=>{
+        console.log(result)
+        res.send(result)
+    })
+
+})
+
+
 export default router;

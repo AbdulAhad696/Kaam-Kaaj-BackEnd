@@ -7,7 +7,7 @@ const router = express.Router()
 // var mongoose = require('mongoose');
 var currentProjects
 router.get("/:_id" , async(req , res)=>{
-    console.log("Request is received for getting the projectss of "+req.params._id)
+    console.log("Request is received for getting the projects of "+req.params._id)
     Jobs.aggregate([
         { $lookup:
             {

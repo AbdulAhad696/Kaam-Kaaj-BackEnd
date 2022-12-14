@@ -14,6 +14,7 @@ const jobsSchema = new mongoose.Schema({
     estCompletionTime:Date,
     category:{type:mongoose.Schema.Types.ObjectId , ref :"Services"},
     jobAssignedTo:{type:mongoose.Schema.Types.ObjectId , ref :"User"},
-    jobAssignedBy:{type:mongoose.Schema.Types.ObjectId , ref :"User"}
+    jobAssignedBy:{type:mongoose.Schema.Types.ObjectId , ref :"User"},
+    acceptedBid:{type:mongoose.Schema.Types.ObjectId,ref :"Bids"}
 })
 export default mongoose.model("jobs",jobsSchema)
