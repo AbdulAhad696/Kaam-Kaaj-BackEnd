@@ -21,6 +21,8 @@ import sendMail from "./routes/sendMail.js"
 import acceptBid from "./routes/acceptBid.js"
 import changePassword from "./routes/changePassword.js";
 import doneProjects from "./routes/doneProjects.js";
+import transactions from "./routes/transactions.js"
+
 
 //App Config
 const app = express();
@@ -30,38 +32,39 @@ const port = process.env.PORT || 8001;
 //MiddleWares
 app.use(express.json());
 app.use(cors());
-app.use( "/uploads" , express.static("uploads"))
-app.use( "/JobGigPics" , express.static("JobGigPics"))
+app.use("/uploads", express.static("uploads"))
+app.use("/JobGigPics", express.static("JobGigPics"))
 
 
 //Routes
-app.use("/" , routes)
-app.use("/signup",signUp)
-app.use("/signin",signin)
-app.use("/services",customerView)
-app.use("/serviceproviders",categoryWiseServiceProvider )
-app.use("/contactus",complain);
+app.use("/", routes)
+app.use("/signup", signUp)
+app.use("/signin", signin)
+app.use("/services", customerView)
+app.use("/serviceproviders", categoryWiseServiceProvider)
+app.use("/contactus", complain);
 
-app.use("/service-provider/viewjobs",viewjobs)
-app.use("/addJobs",addingJobs)
-app.use("/serviceprovider/profile",serviceProviderProfile);
-app.use("/serviceprovider/mydetails",serviceProviderDetails)
-app.use("/client/mydetails",clientDetails)
-app.use("/serviceprovider/projects",serviceProviderProjects)
-app.use("/client/projects",clientProjects)
+app.use("/service-provider/viewjobs", viewjobs)
+app.use("/addJobs", addingJobs)
+app.use("/serviceprovider/profile", serviceProviderProfile);
+app.use("/serviceprovider/mydetails", serviceProviderDetails)
+app.use("/client/mydetails", clientDetails)
+app.use("/serviceprovider/projects", serviceProviderProjects)
+app.use("/client/projects", clientProjects)
 
-app.use("/bids",viewingBids);
-app.use("/customer-mainpage",customerPage);
+app.use("/bids", viewingBids);
+app.use("/customer-mainpage", customerPage);
 
-app.use("/sendmail",sendMail)
-app.use("/changepassword",changePassword)
-app.use("/acceptbid",acceptBid)
-app.use("/serviceProvider/doneProject",doneProjects)
+app.use("/sendmail", sendMail)
+app.use("/transactions", transactions)
+app.use("/changepassword", changePassword)
+app.use("/acceptbid", acceptBid)
+app.use("/serviceProvider/doneProject", doneProjects)
 
 
 
 // Listener
-app.listen(port , ()=>console.log(`LISTENING TO PORT ${port}`));
+app.listen(port, () => console.log(`LISTENING TO PORT ${port}`));
 
 
 
