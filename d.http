@@ -1,3 +1,8 @@
-GET http://localhost:8001/spdata/634a74af2e39d53cc2480d80
 
-# GET http://localhost:8001/serviceproviders/carpenter
+PATCH http://localhost:8001/serviceprovider/profile/sp/status-update HTTP/1.1
+content-type: application/json
+
+{
+    "id": "6397865737db1079562a96a8",
+    "status":"Enabled"
+}

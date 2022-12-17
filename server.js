@@ -32,8 +32,10 @@ const port = process.env.PORT || 8001;
 //MiddleWares
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static("uploads"))
-app.use("/JobGigPics", express.static("JobGigPics"))
+app.use("/Images", express.static("Images"))
+// app.use("/Images/ProfilePics", express.static("ProfilePics"))
+// app.use("/Images/JobGigPics", express.static("JobGigPics"))
+// app.use("/Images/PortfolioPics", express.static("PortfolioPics"))
 
 
 //Routes
