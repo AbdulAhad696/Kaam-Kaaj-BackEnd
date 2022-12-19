@@ -9,7 +9,7 @@ import client from "../modals/ClientProfile.js";
 const router = express.Router();
 
 router.patch("/:jobId", function (req, res) {
-    console.log("Kashir request received")
+    console.log("Project done by sp")
     Job.findById(req.params.jobId).then((specificJob) => {
         serviceProvider.find({ serviceProvider: specificJob.jobAssignedTo }).then((specificServiceProvider) => {
             const newJobsCompleted = specificServiceProvider[0].jobsCompleted + 1;
@@ -17,12 +17,12 @@ router.patch("/:jobId", function (req, res) {
             client.findOne({ client: specificJob.jobAssignedBy }).then((specificClient)=>{
                 const newRating = (specificClient.rating + req.body.rating)/2
                 client.findOneAndUpdate({  client: specificJob.jobAssignedBy } ,{ rating: newRating } ).then((updatedClient)=>{
-                    var newStatus = 'doneByWorker';
+                    var newStatus = '';
                     if(specificJob.status == 'inProgress'){
                         newStatus = 'doneByWorker';
                     }
                     else if(specificJob.status == 'doneByClient'){
-                        newStatus = 'jobCompleted'
+                        newStatus = 'done'
                     }
                     Job.findByIdAndUpdate({_id: req.params.jobId}, {status: newStatus}).then((updatedJob)=>{
                         serviceProvider.findOneAndUpdate({ serviceProvider: specificJob.jobAssignedTo }, {  jobsCompleted: newJobsCompleted, totalEarning: newTotalEarning }).then((updatedServiceProvider) => {

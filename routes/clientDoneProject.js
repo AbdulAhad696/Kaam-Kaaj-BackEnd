@@ -16,12 +16,12 @@ router.patch("/:jobId", function (req, res) {
             serviceProvider.findOne({ serviceProvider: specificJob.jobAssignedTo }).then((specificServiceProvider)=>{
                 const newRating = (specificServiceProvider.rating + req.body.rating) / 2
                 serviceProvider.findOneAndUpdate({ serviceProvider: specificJob.jobAssignedTo },{ rating: newRating }).then((updatedServiceProvider)=>{
-                    var newStatus = 'doneByClient';
+                    var newStatus = '';
                     if(specificJob.status == 'inProgress'){
                         newStatus = 'doneByClient';
                     }
                     else if(specificJob.status == 'doneByWorker'){
-                        newStatus = 'jobCompleted'
+                        newStatus = 'done'
                     }
                     Job.findByIdAndUpdate({_id: req.params.jobId}, {status: newStatus}).then((updatedJob)=>{
                         ClientProfile.findOneAndUpdate({ client: specificJob.jobAssignedBy }, {  jobs: newJobsCompleted, totalSpending: totalSpending }).then((updatedServiceProvider) => {
