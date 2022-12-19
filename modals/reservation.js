@@ -5,6 +5,7 @@ const reservationSchema=new mongoose.Schema({
     email:String,
     phoneNumber:String,
     message:String,
-    usertype:String
+    usertype:String,
+    image:String
 });
 export default mongoose.model("reservations",reservationSchema);
