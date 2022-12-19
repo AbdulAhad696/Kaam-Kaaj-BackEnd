@@ -36,9 +36,6 @@ app.use(cors());
 
 
 
-// app.use("/uploads", express.static("uploads"))
-// app.use("/JobGigPics", express.static("JobGigPics"))
-// app.use("/contactUsPics", express.static("contactUsPics"))
 
 app.use("/Images", express.static("Images"))
 // app.use("/Images/ProfilePics", express.static("ProfilePics"))
