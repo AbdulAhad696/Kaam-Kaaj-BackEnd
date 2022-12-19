@@ -68,38 +68,71 @@ router.get("/:email" ,async function(req,res){
 
     console.log("Request is received for getting the profile of "+req.params.email);
     
-    ServiceProviders.aggregate([
-        { $lookup:
-            {
-                from:'users',
-                localField:'serviceProvider',
-                foreignField:'_id',
-                as:'serviceProviderDetails'
-            }
+    // ServiceProviders.aggregate([
+    //     { $lookup:
+    //         {
+    //             from:'users',
+    //             localField:'serviceProvider',
+    //             foreignField:'_id',
+    //             as:'serviceProviderDetails'
+    //         }
 
-        },
-        {
-            $lookup:{
-                from: "services", 
-                localField: "serviceCategory", 
-                foreignField: "_id",
-                as: "serviceDetails"
-            }
-        },
-        {
-            $match:{
-                $and:[{"serviceProviderDetails.email" : req.params.email}]
-            }
-        }, 
+    //     },
+    //     {
+    //         $lookup:{
+    //             from: "services", 
+    //             localField: "serviceCategory", 
+    //             foreignField: "_id",
+    //             as: "serviceDetails"
+    //         }
+    //     },
+    //     {
+    //         $match:{
+    //             $and:[{"serviceProviderDetails.email" : req.params.email}]
+    //         }
+    //     }, 
         
-    ]).exec(function(err , services){
-        if(err){
-            console.log("Error in retreiving serices..........")
-        }
-        else{
-            res.json(services)
-        }
-    }) 
+    // ]).exec(function(err , services){
+    //     if(err){
+    //         console.log("Error in retreiving serices..........")
+    //     }
+    //     else{
+    //         res.json(services)
+    //     }
+    // }) 
+    User.aggregate([
+      { $lookup:
+          {
+              from:'serviceproviders',
+              localField:'_id',
+              foreignField:'serviceProvider',
+              as:'serviceProviderDetails'
+          }
+
+      },
+      {
+          $lookup:{
+              from: "services", 
+              localField: "serviceProviderDetails.serviceCategory", 
+              foreignField: "_id",
+              as: "serviceDetails"
+          }
+      },
+      {
+          $match:{
+              $and:[{"email" : req.params.email}]
+          }
+      }, 
+      
+  ]).exec(function(err , services){
+      if(err){
+          console.log("Error in retreiving serices..........")
+      }
+      else{
+        console.log(services)
+          res.send(services)
+      }
+  }) 
 })
 
 router.put("/updateProfile" ,uploadProfilePicture.single("url"),(req, res)=>{
@@ -194,8 +227,10 @@ router.put("/updateProfile/uploadImage" ,uploadPortfolioPicture.single("url"),(r
   }).catch((err)=>res.status(500).send(err))
 
 })
-router.get("/reviews/:id",async(req, res)=>{
-  console.log("Requesting reviews for id" , req.params.id)
+router.get("/reviews/:email",async(req, res)=>{
+  console.log("Requesting reviews for id" , req.params.email)
+  var id = await User.find({email:req.params.email} ,'_id')
+  console.log(id)
   Review.aggregate([
     {$lookup:
     {
@@ -219,7 +254,7 @@ router.get("/reviews/:id",async(req, res)=>{
         as:"profile"
       }},
     {$match:
-    {"reviewTo":mongoose.Types.ObjectId(req.params.id)}
+    {"reviewTo":id[0]._id}
    }
   
   ]).exec((err , data)=>{
