@@ -20,8 +20,9 @@ import clientProjects from "./routes/clientProjects.js"
 import sendMail from "./routes/sendMail.js"
 import acceptBid from "./routes/acceptBid.js"
 import changePassword from "./routes/changePassword.js";
-import doneProjects from "./routes/doneProjects.js";
+import doneProjects from "./routes/SpDoneProjects.js";
 import transactions from "./routes/transactions.js"
+import clientDoneProject from "./routes/clientDoneProject.js"
 
 
 //App Config
@@ -62,6 +63,7 @@ app.use("/transactions", transactions)
 app.use("/changepassword", changePassword)
 app.use("/acceptbid", acceptBid)
 app.use("/serviceProvider/doneProject", doneProjects)
+app.use("/client/doneProject",clientDoneProject)
 
 
 
