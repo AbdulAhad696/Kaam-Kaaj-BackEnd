@@ -7,11 +7,13 @@ import mongoose from "mongoose";
 const router = express.Router();
 
 router.patch("/:jobId", function (req, res) {
+    console.log("Kashir request received")
     Job.findById(req.params.jobId).then((specificJob) => {
         serviceProvider.find({ serviceProvider: specificJob.jobAssignedTo }).then((specificServiceProvider) => {
             const newRating = (specificServiceProvider[0].rating + req.body.rating) / 2
             const newJobsCompleted = specificServiceProvider[0].jobsCompleted + 1;
             const newTotalEarning = specificServiceProvider[0].totalEarning + req.body.earning
+            specificJob.status="doneByWorker"
             serviceProvider.findOneAndUpdate({ serviceProvider: specificJob.jobAssignedTo }, { rating: newRating, jobsCompleted: newJobsCompleted, totalEarning: newTotalEarning }).then((updatedServiceProvider) => {
                 let currentDate = new Date()
                 let review = new Review({

@@ -1,3 +1,4 @@
+
 import express  from "express";
 import ServiceProviders from "../modals/ServiceProviders.js";
 import multer from "multer";
@@ -9,17 +10,36 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import Cryptr from "cryptr"
 import Review from "../modals/Review.js";
+import Jobs from "../modals/Jobs.js";
 const router = express.Router();
 
-const storage = multer.diskStorage({
+const storageProfilePicture = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, './uploads/');
+      cb(null, './Images/ProfilePics');
     },
     filename: function(req, file, cb) {
-      cb(null, file.originalname)?.toLowerCase().split(' ').join('_');
+      var date = new Date();
+      var timeStamp = date.toDateString()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+"-"+date.getMilliseconds();
+      // timeStampArray.push(timeStamp)
+      timeStamp = timeStamp?.toLowerCase().split(' ').join('_');
+      file.originalname = file.originalname?.toLowerCase().split(' ').join('_');
+      cb(null , timeStamp+"_"+file.originalname)
     }
   });
 
+const storagePortfolioPicture = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, './Images/PortfolioPics/');
+    },
+    filename: function(req, file, cb) {
+      var date = new Date();
+      var timeStamp = date.toDateString()+"_"+date.getHours()+"-"+date.getMinutes()+"-"+date.getSeconds()+"-"+date.getMilliseconds();
+      // timeStampArray.push(timeStamp)
+      timeStamp = timeStamp?.toLowerCase().split(' ').join('_');
+      file.originalname = file.originalname?.toLowerCase().split(' ').join('_');
+      cb(null , timeStamp+"_"+file.originalname)
+    }
+  });
   const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jfif') {
       cb(null, true);
@@ -27,8 +47,15 @@ const storage = multer.diskStorage({
       cb(null, false);
     }
   };
-const uploads = multer({
-    storage: storage,
+const uploadPortfolioPicture = multer({
+    storage: storagePortfolioPicture,
+    limits: {
+      fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+  });
+  const uploadProfilePicture = multer({
+    storage: storageProfilePicture,
     limits: {
       fileSize: 1024 * 1024 * 5
     },
@@ -41,41 +68,74 @@ router.get("/:email" ,async function(req,res){
 
     console.log("Request is received for getting the profile of "+req.params.email);
     
-    ServiceProviders.aggregate([
-        { $lookup:
-            {
-                from:'users',
-                localField:'serviceProvider',
-                foreignField:'_id',
-                as:'serviceProviderDetails'
-            }
+    // ServiceProviders.aggregate([
+    //     { $lookup:
+    //         {
+    //             from:'users',
+    //             localField:'serviceProvider',
+    //             foreignField:'_id',
+    //             as:'serviceProviderDetails'
+    //         }
 
-        },
-        {
-            $lookup:{
-                from: "services", 
-                localField: "serviceCategory", 
-                foreignField: "_id",
-                as: "serviceDetails"
-            }
-        },
-        {
-            $match:{
-                $and:[{"serviceProviderDetails.email" : req.params.email}]
-            }
-        }, 
+    //     },
+    //     {
+    //         $lookup:{
+    //             from: "services", 
+    //             localField: "serviceCategory", 
+    //             foreignField: "_id",
+    //             as: "serviceDetails"
+    //         }
+    //     },
+    //     {
+    //         $match:{
+    //             $and:[{"serviceProviderDetails.email" : req.params.email}]
+    //         }
+    //     }, 
         
-    ]).exec(function(err , services){
-        if(err){
-            console.log("Error in retreiving serices..........")
-        }
-        else{
-            res.json(services)
-        }
-    }) 
+    // ]).exec(function(err , services){
+    //     if(err){
+    //         console.log("Error in retreiving serices..........")
+    //     }
+    //     else{
+    //         res.json(services)
+    //     }
+    // }) 
+    User.aggregate([
+      { $lookup:
+          {
+              from:'serviceproviders',
+              localField:'_id',
+              foreignField:'serviceProvider',
+              as:'serviceProviderDetails'
+          }
+
+      },
+      {
+          $lookup:{
+              from: "services", 
+              localField: "serviceProviderDetails.serviceCategory", 
+              foreignField: "_id",
+              as: "serviceDetails"
+          }
+      },
+      {
+          $match:{
+              $and:[{"email" : req.params.email}]
+          }
+      }, 
+      
+  ]).exec(function(err , services){
+      if(err){
+          console.log("Error in retreiving serices..........")
+      }
+      else{
+        console.log(services)
+          res.send(services)
+      }
+  }) 
 })
 
-router.put("/updateProfile" ,uploads.single("url"),(req, res)=>{
+router.put("/updateProfile" ,uploadProfilePicture.single("url"),(req, res)=>{
   let serviceId;
   let userId;
   console.log("Request received to update profile" , req.body)
@@ -105,10 +165,15 @@ router.put("/updateProfile" ,uploads.single("url"),(req, res)=>{
             console.log(3)
             console.log(updatedSP)
             const __filename = fileURLToPath(import.meta.url);
-            fs.unlink(path.dirname(path.dirname(__filename))+"/"+updatedSP.profilePicture , (err)=>{
-              if(err) console.log(err);
-              console.log('image was deleted');
-            })
+            // console.log(__filename)
+            // console.log(path.dirname(path.dirname(__filename)))
+            console.log(updatedSP.profilePicture)
+            if (updatedSP.profilePicture != "uploads\\defaultProfile.png"){
+              fs.unlink(path.dirname(path.dirname(__filename))+"/"+updatedSP.profilePicture , (err)=>{
+                if(err) console.log(err);
+                console.log('image was deleted');
+              })
+            }
            })
           }
           else{
@@ -127,8 +192,10 @@ router.put("/updateProfile" ,uploads.single("url"),(req, res)=>{
     })
 
   }).catch(err=>console.log(err))
-
-  res.status(200).send("");
+  setTimeout(() => {
+    res.status(200).send("");
+    
+  }, 1000);
   
 })
 router.put("/updateProfile/deleteImage" , (req , res)=>{
@@ -148,7 +215,7 @@ router.put("/updateProfile/deleteImage" , (req , res)=>{
     }).then((sp)=>res.status(200).send(sp)).catch((err)=>res.status(500).send(err))
   }).catch((err)=>res.status(500).send(err))
 })
-router.put("/updateProfile/uploadImage" ,uploads.single("url"),(req, res)=>{
+router.put("/updateProfile/uploadImage" ,uploadPortfolioPicture.single("url"),(req, res)=>{
   let email = req.body.email
   let imageUrl = req.file.path
   console.log(imageUrl)
@@ -160,8 +227,10 @@ router.put("/updateProfile/uploadImage" ,uploads.single("url"),(req, res)=>{
   }).catch((err)=>res.status(500).send(err))
 
 })
-router.get("/reviews/:id",async(req, res)=>{
-  console.log("Requesting reviews for id" , req.params.id)
+router.get("/reviews/:email",async(req, res)=>{
+  console.log("Requesting reviews for id" , req.params.email)
+  var id = await User.find({email:req.params.email} ,'_id')
+  console.log(id)
   Review.aggregate([
     {$lookup:
     {
@@ -185,7 +254,7 @@ router.get("/reviews/:id",async(req, res)=>{
         as:"profile"
       }},
     {$match:
-    {"reviewTo":mongoose.Types.ObjectId(req.params.id)}
+    {"reviewTo":id[0]._id}
    }
   
   ]).exec((err , data)=>{
@@ -197,6 +266,18 @@ router.get("/reviews/:id",async(req, res)=>{
       res.status(200).send(data)
     }
   })
+})
+router.patch("/sp/status-update",(req , res)=>{
+  var currentStatus = req.body.status
+  console.log( "REQUEST RECEIVED TO TOGGLE STATUS OF", req.body.id)
+  console.log(currentStatus)
+  ServiceProviders.findOneAndUpdate({serviceProvider:req.body?.id},
+    [{$set:{status:
+      {
+        $cond: { if:{$or:[{ $eq: [ currentStatus, "" ] } ,{ $eq: [ currentStatus, "Enabled" ] } ]} , then: "Disabled", else: "Enabled" }
+      }
+  }}]
+    ).then((sp)=>res.status(200).send(sp)).catch((err)=>{res.status(500).send(err) ; console.log(err)} )
 })
 
 

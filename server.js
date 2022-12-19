@@ -20,9 +20,11 @@ import clientProjects from "./routes/clientProjects.js"
 import sendMail from "./routes/sendMail.js"
 import acceptBid from "./routes/acceptBid.js"
 import changePassword from "./routes/changePassword.js";
-import doneProjects from "./routes/doneProjects.js";
+import doneProjects from "./routes/SpDoneProjects.js";
 import transactions from "./routes/transactions.js"
 import allComplaints from "./routes/viewComplaints.js";
+import clientDoneProject from "./routes/clientDoneProject.js"
+
 
 //App Config
 const app = express();
@@ -31,9 +33,18 @@ const port = process.env.PORT || 8001;
 //MiddleWares
 app.use(express.json());
 app.use(cors());
-app.use("/uploads", express.static("uploads"))
-app.use("/JobGigPics", express.static("JobGigPics"))
-app.use("/contactUsPics", express.static("contactUsPics"))
+
+
+
+// app.use("/uploads", express.static("uploads"))
+// app.use("/JobGigPics", express.static("JobGigPics"))
+// app.use("/contactUsPics", express.static("contactUsPics"))
+
+app.use("/Images", express.static("Images"))
+// app.use("/Images/ProfilePics", express.static("ProfilePics"))
+// app.use("/Images/JobGigPics", express.static("JobGigPics"))
+// app.use("/Images/PortfolioPics", express.static("PortfolioPics"))
+
 
 //Routes
 app.use("/", routes)
@@ -57,6 +68,9 @@ app.use("/changepassword", changePassword)
 app.use("/acceptbid", acceptBid)
 app.use("/serviceProvider/doneProject", doneProjects)
 app.use("/complaints",allComplaints)
+app.use("/client/doneProject",clientDoneProject)
+
+
 
 // Listener
 app.listen(port, () => console.log(`LISTENING TO PORT ${port}`));
