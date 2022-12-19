@@ -45,8 +45,8 @@ router.get("/:email" , async(req , res)=>{
             totalDoneJobsInDueDate=await querryForDoneJobsOnTime.count()
             // totalRejectedJobs=await querryForRejectedJobs.count()
             if(data.length>0){
-            data[0].orderCompletion=(totalDoneJobs/totalJobs)*100
-            data[0].deliverOnTime=(totalDoneJobsInDueDate/totalDoneJobs)*100
+            data[0].orderCompletion=((totalDoneJobs/totalJobs)*100).toFixed(2)
+            data[0].deliverOnTime=((totalDoneJobsInDueDate/totalDoneJobs)*100).toFixed(2)
             data[0].jobsCompleted=totalDoneJobs
             }
             // data[0].responseRate=(100-(totalRejectedJobs/totalJobs)*100)
