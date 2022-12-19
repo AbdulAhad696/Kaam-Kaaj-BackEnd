@@ -129,7 +129,7 @@ router.get("/:email" ,async function(req,res){
           console.log("Error in retreiving serices..........")
       }
       else{
-        console.log(services)
+        console.log("sp service: ",services)
           res.send(services)
       }
   }) 
