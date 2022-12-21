@@ -86,22 +86,34 @@ router.patch("/",async (req,resq)=>{
         jobId:req.body.id,
         status:"pending"
     }
-    let bidbysp = new Bids(object);
-    console.log(req.body.id)
-    console.log(object.amount,object.duration,object.email)
-    await bidbysp.save().then(async(res)=>{
-        let bidId = res._id
-        const query = {_id:req.body.id}
-        const updatedoc = {$push:{"bids":bidId}}
-        await Jobs.updateOne(query,updatedoc).then(doc=>{
+    let bidExist = await Bids.find({email:req.body.email,jobId:req.body.jobId})
+    if(bidExist){
+        const query = {email:req.body.email}
+        const updatedoc = {$set:{"amount":req.body.amount,"duration":req.body.duration}}
+        await Bids.updateOne(query,updatedoc).then(doc=>{
             resq.send(doc)
+        }).catch((erro)=>{
+            console.log(erro)
+            resq.send(erro)
         })
+    }
+    else{
+        let bidbysp = new Bids(object);
+        console.log(req.body.id)
+        console.log(object.amount,object.duration,object.email)
+        await bidbysp.save().then(async(res)=>{
+            let bidId = res._id
+            const query = {_id:req.body.id}
+            const updatedoc = {$push:{"bids":bidId}}
+            await Jobs.updateOne(query,updatedoc).then(doc=>{
+                resq.send(doc)
+            })
 
-    }).catch((erro)=>{
-        console.log(erro)
-        resq.send(erro)
-    })
-    
+        }).catch((erro)=>{
+            console.log(erro)
+            resq.send(erro)
+        })
+    }
 })
 
 export default router

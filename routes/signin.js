@@ -60,7 +60,7 @@ router.get("/:email/:password", async (req, res) => {
 
     else {
         if (password == (userdata[0]?.password)) {
-            res.status(200).send(user);
+            res.status(200).send(userdata);
         }
         else {
             res.send({})
