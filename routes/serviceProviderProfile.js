@@ -68,38 +68,6 @@ router.get("/:email" ,async function(req,res){
 
     console.log("Request is received for getting the profile of "+req.params.email);
     
-    // ServiceProviders.aggregate([
-    //     { $lookup:
-    //         {
-    //             from:'users',
-    //             localField:'serviceProvider',
-    //             foreignField:'_id',
-    //             as:'serviceProviderDetails'
-    //         }
-
-    //     },
-    //     {
-    //         $lookup:{
-    //             from: "services", 
-    //             localField: "serviceCategory", 
-    //             foreignField: "_id",
-    //             as: "serviceDetails"
-    //         }
-    //     },
-    //     {
-    //         $match:{
-    //             $and:[{"serviceProviderDetails.email" : req.params.email}]
-    //         }
-    //     }, 
-        
-    // ]).exec(function(err , services){
-    //     if(err){
-    //         console.log("Error in retreiving serices..........")
-    //     }
-    //     else{
-    //         res.json(services)
-    //     }
-    // }) 
     User.aggregate([
       { $lookup:
           {
@@ -141,6 +109,7 @@ router.put("/updateProfile" ,uploadProfilePicture.single("url"),(req, res)=>{
   console.log("Request received to update profile" , req.body)
   const profile = req.body;
   profile.url = req?.file?.path;
+  console.log(profile)
   // Updating data in USER Collection
   User.findOneAndUpdate({email:profile.email} ,{
   address : profile.address,
@@ -263,6 +232,10 @@ router.get("/reviews/:email",async(req, res)=>{
     }
     else{
       console.log(data)
+      data.map((element) => {
+        element.reviewDate = new Date(element.reviewDate).toUTCString()
+        return element
+    })
       res.status(200).send(data)
     }
   })
