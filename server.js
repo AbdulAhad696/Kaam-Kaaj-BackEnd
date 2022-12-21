@@ -22,6 +22,7 @@ import acceptBid from "./routes/acceptBid.js"
 import changePassword from "./routes/changePassword.js";
 import doneProjects from "./routes/SpDoneProjects.js";
 import transactions from "./routes/transactions.js"
+import allComplaints from "./routes/viewComplaints.js";
 import clientDoneProject from "./routes/clientDoneProject.js"
 
 
@@ -29,10 +30,13 @@ import clientDoneProject from "./routes/clientDoneProject.js"
 const app = express();
 const port = process.env.PORT || 8001;
 
-
 //MiddleWares
 app.use(express.json());
 app.use(cors());
+
+
+
+
 app.use("/Images", express.static("Images"))
 // app.use("/Images/ProfilePics", express.static("ProfilePics"))
 // app.use("/Images/JobGigPics", express.static("JobGigPics"))
@@ -46,7 +50,6 @@ app.use("/signin", signin)
 app.use("/services", customerView)
 app.use("/serviceproviders", categoryWiseServiceProvider)
 app.use("/contactus", complain);
-
 app.use("/service-provider/viewjobs", viewjobs)
 app.use("/addJobs", addingJobs)
 app.use("/serviceprovider/profile", serviceProviderProfile);
@@ -54,15 +57,14 @@ app.use("/serviceprovider/mydetails", serviceProviderDetails)
 app.use("/client/mydetails", clientDetails)
 app.use("/serviceprovider/projects", serviceProviderProjects)
 app.use("/client/projects", clientProjects)
-
 app.use("/bids", viewingBids);
 app.use("/customer-mainpage", customerPage);
-
 app.use("/sendmail", sendMail)
 app.use("/transactions", transactions)
 app.use("/changepassword", changePassword)
 app.use("/acceptbid", acceptBid)
 app.use("/serviceProvider/doneProject", doneProjects)
+app.use("/complaints", allComplaints)
 app.use("/client/doneProject", clientDoneProject)
 
 

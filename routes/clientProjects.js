@@ -36,7 +36,8 @@ router.get("/:_id" , async(req , res)=>{
         },
         {
             $match:{
-                $and:[{"jobAssignedBy":mongoose.Types.ObjectId(req.params._id),"status": "inProgress"}]
+                $or:[{"jobAssignedBy":mongoose.Types.ObjectId(req.params._id),"status": "inProgress"},{"jobAssignedBy":mongoose.Types.ObjectId(req.params._id),"status": "doneByWorker"}]
+                
             }
         }, 
         
