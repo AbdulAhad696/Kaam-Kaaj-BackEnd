@@ -14,53 +14,53 @@ router.get("/:email/:password", async (req, res) => {
     console.log("ENTERED")
     const userdata = await User.find({ email: email })
     if (email != "kaamkaaj35@gmail.com" && userdata[0]?.password != null) {
-        if (userdata[0].role == "Worker"){
+        if (userdata[0].role == "Worker") {
             User.aggregate([
                 {
-                    $lookup:{
-                        from:"serviceproviders",
-                        localField:"_id",
-                        foreignField:"serviceProvider",
-                        as:"spDetails"
+                    $lookup: {
+                        from: "serviceproviders",
+                        localField: "_id",
+                        foreignField: "serviceProvider",
+                        as: "spDetails"
                     }
                 },
                 {
-                    $match:{
-                        $and:[{"email" : req.params.email}]
+                    $match: {
+                        $and: [{ "email": req.params.email }]
                     }
                 }
-            
-            ]).exec(function(err,resData){
-                if (err){
+
+            ]).exec(function (err, resData) {
+                if (err) {
                     console.log("Error in retreiving")
                 }
-                else{
-                    if(password == cryptr.decrypt(userdata[0]?.password) && resData[0].spDetails[0].status != "Disabled" ){
+                else {
+                    if (password == cryptr.decrypt(userdata[0]?.password) && resData[0].spDetails[0].status != "Disabled") {
                         res.status(200).send(userdata);
                     }
-                    else if (resData[0].spDetails[0].status == "Disabled"){
-                        res.send({msg:"Your Account Has been disabled. Please contact Admin"})
+                    else if (resData[0].spDetails[0].status == "Disabled") {
+                        res.send({ msg: "Your Account Has been disabled. Please contact Admin" })
                     }
-                    else{
+                    else {
                         res.send({})
                     }
                 }
             })
         }
-        else{
+        else {
             if (password == cryptr.decrypt(userdata[0]?.password)) {
                 res.status(200).send(userdata);
             }
-            else{
+            else {
                 res.send({})
             }
         }
-        
+
     }
 
     else {
         if (password == (userdata[0]?.password)) {
-            res.status(200).send(user);
+            res.status(200).send(userdata);
         }
         else {
             res.send({})

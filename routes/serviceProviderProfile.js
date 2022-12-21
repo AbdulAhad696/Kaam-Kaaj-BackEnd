@@ -232,6 +232,10 @@ router.get("/reviews/:email",async(req, res)=>{
     }
     else{
       console.log(data)
+      data.map((element) => {
+        element.reviewDate = new Date(element.reviewDate).toUTCString()
+        return element
+    })
       res.status(200).send(data)
     }
   })
