@@ -3,6 +3,7 @@ import ServiceProviders from "../modals/ServiceProviders.js";
 import jobs from "../modals/Jobs.js"
 import Jobs from "../modals/Jobs.js";
 import Bids from "../modals/Bids.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -42,7 +43,8 @@ router.get("/:email",(req,res)=>{
         }
     })
 })
-router.get("/categoryjobs/:cat",(req,res)=>{
+router.get("/categoryjobs/:cat/:id",(req,res)=>{
+    console.log(req.params.id)
     jobs.aggregate([
         {
             $lookup:
@@ -64,7 +66,8 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         {   
             $match:
             {
-                $and:[{"serviceDetails.tittle":req.params.cat,status:"punched"}]
+                $and:[{"serviceDetails.tittle":req.params.cat},{status:"punched"},{$or:[{jobAssignedTo:null},{jobAssignedTo:mongoose.Types.ObjectId(req.params.id) }]}    
+                    ]
             }
         }
 
@@ -74,7 +77,7 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         }
         else{
             res.json(data)
-            console.log("Jobs by Category Sent")
+            console.log("Jobs by Category Sent",data)
         }
     })
 })
