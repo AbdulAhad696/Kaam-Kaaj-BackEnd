@@ -15,32 +15,21 @@ router.patch("/:jobId",   (req, res)=> {
             const newJobsCompleted = specificClient[0].jobs+1;
             const totalSpending = specificClient[0].totalSpending + req.body.earning
             serviceProvider.findOne({ serviceProvider: specificJob.jobAssignedTo }).then((specificServiceProvider)=>{
-                const newRating = (specificServiceProvider.rating + req.body.rating) / 2
-                serviceProvider.findOneAndUpdate({ serviceProvider: specificJob.jobAssignedTo },{ rating: newRating }).then((updatedServiceProvider)=>{
+                
+                
+                const newRating = ((specificServiceProvider.rating + req.body.rating) / 2).toFixed(2)
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                    
+                serviceProvider.findOneAndUpdate({ serviceProvider: specificJob.jobAssignedTo },{ rating: newRating }).then((updatedServiceProvider)=>{                    
                     // ---------------updating service rating-----------------
                     var newServiceRating = 0;
                     serviceProvider.find({ serviceCategory: specificServiceProvider?.serviceCategory }).then((ServiceProvidersOfSpecificCaregory)=>{
                         for(let i = 0 ; i < ServiceProvidersOfSpecificCaregory.length; i++){
                             newServiceRating = newServiceRating + ServiceProvidersOfSpecificCaregory[i].rating
                         }
-                        newServiceRating = newServiceRating/ServiceProvidersOfSpecificCaregory.length
+                        newServiceRating = (newServiceRating/ServiceProvidersOfSpecificCaregory.length).toFixed(2)
                         service.findByIdAndUpdate({_id:specificServiceProvider?.serviceCategory},{rating: newServiceRating}).then((updatedService)=>{
                             var newStatus = 'doneByClient';
                             if(specificJob.status == 'inProgress'){
@@ -50,7 +39,6 @@ router.patch("/:jobId",   (req, res)=> {
                                 newStatus = 'jobCompleted'
                                 
                             }
-    
                             Job.findByIdAndUpdate({_id: req.params.jobId}, {status: newStatus}).then((updatedJob)=>{
                                 ClientProfile.findOneAndUpdate({ client: specificJob.jobAssignedBy }, {  jobs: newJobsCompleted, totalSpending: totalSpending }).then((updatedServiceProvider) => {
                                     let currentDate = new Date()
@@ -73,22 +61,6 @@ router.patch("/:jobId",   (req, res)=> {
                                     })
                                     res.send(specificClient);
                                 })
-                                
-
-
-
-
-
-
-
-
-
-
-                                
-
-
-
-
                             })
                         })
                     })
