@@ -82,15 +82,11 @@ router.get("/categoryjobs/:cat/:id",(req,res)=>{
     })
 })
 router.patch("/",async (req,resq)=>{
-    let object = {
-        duration:req.body.duration,
-        amount:req.body.amount,
-        email:req.body.email,
-        jobId:req.body.id,
-        status:"pending"
-    }
-    let bidExist = await Bids.find({email:req.body.email,jobId:req.body.jobId})
-    if(bidExist){
+    console.log(req.body.email,req.body.jobId)
+    let bidExist = await Bids.find({email:req.body.email,jobId:req.body.id,status:"pending"})
+    console.log(bidExist)
+    if(bidExist[0]!=null){
+        console.log("Updating bids")
         const query = {email:req.body.email}
         const updatedoc = {$set:{"amount":req.body.amount,"duration":req.body.duration}}
         await Bids.updateOne(query,updatedoc).then(doc=>{
@@ -101,6 +97,14 @@ router.patch("/",async (req,resq)=>{
         })
     }
     else{
+        let object = {
+            duration:req.body.duration,
+            amount:req.body.amount,
+            email:req.body.email,
+            jobId:req.body.id,
+            status:"pending"
+        }
+        console.log("Creating new bid")
         let bidbysp = new Bids(object);
         console.log(req.body.id)
         console.log(object.amount,object.duration,object.email)

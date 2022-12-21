@@ -41,11 +41,14 @@ router.patch("/:jobId",   (req, res)=> {
                             }
                             Job.findByIdAndUpdate({_id: req.params.jobId}, {status: newStatus}).then((updatedJob)=>{
                                 ClientProfile.findOneAndUpdate({ client: specificJob.jobAssignedBy }, {  jobs: newJobsCompleted, totalSpending: totalSpending }).then((updatedServiceProvider) => {
+
+                                    
+
                                     let currentDate = new Date()
                                     let review = new Review({
                                         job: specificJob._id,
                                         review: req.body.review,
-                                        reviewTo: specificClient[0].client,
+                                        reviewTo: specificServiceProvider.serviceProvider,
                                         reviewDate: currentDate
                                     })
                                     let isReviewAdded;

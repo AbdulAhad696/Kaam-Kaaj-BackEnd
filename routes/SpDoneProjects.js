@@ -20,7 +20,7 @@ router.patch("/:jobId", function (req, res) {
                 
                 const newRating = ((specificClient.rating + req.body.rating)/2).toFixed(2)
 
-
+                console.log("Hello ",specificClient.client)
 
 
                 client.findOneAndUpdate({  client: specificJob.jobAssignedBy } ,{ rating: newRating } ).then((updatedClient)=>{
@@ -37,7 +37,7 @@ router.patch("/:jobId", function (req, res) {
                             let review = new Review({
                                 job: specificJob._id,
                                 review: req.body.review,
-                                reviewTo: specificServiceProvider[0].serviceProvider,
+                                reviewTo: specificClient.client,
                                 reviewDate: currentDate
                             })
                             let isReviewAdded;
