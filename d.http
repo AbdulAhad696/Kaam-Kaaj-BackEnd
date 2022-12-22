@@ -1,8 +1,7 @@
 
-PATCH http://localhost:8001/serviceprovider/profile/sp/status-update HTTP/1.1
+PATCH http://localhost:8001/transactions/getMoney/50 HTTP/1.1
 content-type: application/json
+huihuihuihuihuihuihuihui
 
 {
-    "id": "6397865737db1079562a96a8",
-    "status":"Enabled"
 }

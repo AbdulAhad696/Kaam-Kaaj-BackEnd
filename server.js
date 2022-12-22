@@ -64,8 +64,8 @@ app.use("/transactions", transactions)
 app.use("/changepassword", changePassword)
 app.use("/acceptbid", acceptBid)
 app.use("/serviceProvider/doneProject", doneProjects)
-app.use("/complaints",allComplaints)
-app.use("/client/doneProject",clientDoneProject)
+app.use("/complaints", allComplaints)
+app.use("/client/doneProject", clientDoneProject)
 
 
 
