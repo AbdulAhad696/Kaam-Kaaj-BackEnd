@@ -35,22 +35,20 @@ router.patch("/spToAdmin/:spId", async (req, res) => {
 
 router.patch("/getMoney/:amount", async (req, res) => {
     console.log("Request received to update the profit of admin:" + req.params.amount)
-    // const user = await User.findById("639726e583fb10e22a7bb183")
-    // console.log(user.totalEarning)
+    // const user = await User.find({ _id: mongoose.Types.ObjectId("639726e583fb10e22a7bb183") })
+    // console.log(user)
+    // console.log(user[0].totalEarning)
     User.updateOne({ _id: mongoose.Types.ObjectId("639726e583fb10e22a7bb183") }, { $inc: { totalEarning: parseInt(req.params.amount) } }, (err, data) => {
         if (err) {
             console.log(err)
         }
-        else { console.log(data) }
-    }).then(
-        data1 => {
-            console.log("AMount Received", data1)
-            res.status(200).send(data1)
+        else {
+            console.log(data);
+            console.log("AMount Received", data)
         }
-    ).catch(err => { console.log(err) })
-
-}
-)
+    }
+    )
+})
 router.get("/getTransactions/:spid", async (req, res) => {
     // req.params.spid.replace(":", "")
     console.log("Get Transaction Details for", req.params.spid)
@@ -89,6 +87,10 @@ router.get("/getTransactions/:spid", async (req, res) => {
         }
         else {
             console.log(data)
+            data.map((element) => {
+                element.timeStamp = new Date(element.timeStamp).toUTCString()
+                return element
+            })
             res.send(data)
         }
     })

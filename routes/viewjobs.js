@@ -3,6 +3,7 @@ import ServiceProviders from "../modals/ServiceProviders.js";
 import jobs from "../modals/Jobs.js"
 import Jobs from "../modals/Jobs.js";
 import Bids from "../modals/Bids.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -42,7 +43,8 @@ router.get("/:email",(req,res)=>{
         }
     })
 })
-router.get("/categoryjobs/:cat",(req,res)=>{
+router.get("/categoryjobs/:cat/:id",(req,res)=>{
+    console.log(req.params.id)
     jobs.aggregate([
         {
             $lookup:
@@ -64,7 +66,8 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         {   
             $match:
             {
-                $and:[{"serviceDetails.tittle":req.params.cat,status:"punched"}]
+                $and:[{"serviceDetails.tittle":req.params.cat},{status:"punched"},{$or:[{jobAssignedTo:null},{jobAssignedTo:mongoose.Types.ObjectId(req.params.id) }]}    
+                    ]
             }
         }
 
@@ -74,34 +77,50 @@ router.get("/categoryjobs/:cat",(req,res)=>{
         }
         else{
             res.json(data)
-            console.log("Jobs by Category Sent")
+            console.log("Jobs by Category Sent",data)
         }
     })
 })
 router.patch("/",async (req,resq)=>{
-    let object = {
-        duration:req.body.duration,
-        amount:req.body.amount,
-        email:req.body.email,
-        jobId:req.body.id,
-        status:"pending"
-    }
-    let bidbysp = new Bids(object);
-    console.log(req.body.id)
-    console.log(object.amount,object.duration,object.email)
-    await bidbysp.save().then(async(res)=>{
-        let bidId = res._id
-        const query = {_id:req.body.id}
-        const updatedoc = {$push:{"bids":bidId}}
-        await Jobs.updateOne(query,updatedoc).then(doc=>{
+    console.log(req.body.email,req.body.jobId)
+    let bidExist = await Bids.find({email:req.body.email,jobId:req.body.id,status:"pending"})
+    console.log(bidExist)
+    if(bidExist[0]!=null){
+        console.log("Updating bids")
+        const query = {email:req.body.email}
+        const updatedoc = {$set:{"amount":req.body.amount,"duration":req.body.duration}}
+        await Bids.updateOne(query,updatedoc).then(doc=>{
             resq.send(doc)
+        }).catch((erro)=>{
+            console.log(erro)
+            resq.send(erro)
         })
+    }
+    else{
+        let object = {
+            duration:req.body.duration,
+            amount:req.body.amount,
+            email:req.body.email,
+            jobId:req.body.id,
+            status:"pending"
+        }
+        console.log("Creating new bid")
+        let bidbysp = new Bids(object);
+        console.log(req.body.id)
+        console.log(object.amount,object.duration,object.email)
+        await bidbysp.save().then(async(res)=>{
+            let bidId = res._id
+            const query = {_id:req.body.id}
+            const updatedoc = {$push:{"bids":bidId}}
+            await Jobs.updateOne(query,updatedoc).then(doc=>{
+                resq.send(doc)
+            })
 
-    }).catch((erro)=>{
-        console.log(erro)
-        resq.send(erro)
-    })
-    
+        }).catch((erro)=>{
+            console.log(erro)
+            resq.send(erro)
+        })
+    }
 })
 
 export default router

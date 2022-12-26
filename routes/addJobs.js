@@ -17,7 +17,7 @@ var temporarilyHoldImages=[];
 const router = express.Router();
 const storage = multer.diskStorage({
     destination: (req , file , callback) => {
-        callback(null ,  "JobGigPics\\")
+        callback(null ,  "Images\\JobGigPics\\")
     },
     filename: (req , file , callback) =>{
         date = new Date();

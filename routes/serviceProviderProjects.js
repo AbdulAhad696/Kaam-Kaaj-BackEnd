@@ -52,7 +52,7 @@ router.get("/:_id" , async(req , res)=>{
         },
         {
             $match:{
-                $or:[{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"inProgress"},{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"doneByClient"}]
+                $or:[{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"inProgress"},{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"doneByClient"} ,{"jobAssignedTo":mongoose.Types.ObjectId(req.params._id),"status":"jobCompleted"} ]
             }
         }, 
         
